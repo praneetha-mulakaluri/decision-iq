@@ -4,6 +4,12 @@ from pandas.errors import EmptyDataError
 
 async def process_csv(file: UploadFile):
 
+    if not file.filename or not file.filename.lower().endswith(".csv"):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid file type. Please upload a CSV file"
+        )
+
     try:
         df = pd.read_csv(file.file)
 
