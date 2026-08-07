@@ -20,11 +20,24 @@ async def process_csv(file: UploadFile):
             )
 
         return {
-            "rows": df.shape[0],
-            "columns": df.shape[1],
-            "column_names": list(df.columns),
-            "data_types": df.dtypes.astype(str).to_dict(),
-            "missing_values": df.isnull().sum().to_dict()
+            "summary": {
+                "rows": df.shape[0],
+                "columns": df.shape[1],
+                "memory_usage": int(df.memory_usage(deep=True).sum()),
+                "duplicate_rows": int(df.duplicated().sum())
+            },
+            "schema": {
+                "column_names": list(df.columns),
+                "data_types": df.dtypes.astype(str).to_dict(),
+                "numeric_columns": df.select_dtypes(include=['number']).columns.tolist(),
+                "categorical_columns": df.select_dtypes(include=['object', 'category']).columns.tolist()
+            },
+            "data_quality": {
+                "missing_values": df.isnull().sum().to_dict(),
+                "missing_values_percentage": (df.isnull().sum() / len(df) * 100).to_dict(),
+                "duplicate_rows_percentage": (df.duplicated().sum() / len(df) * 100),
+                "unique_values": {col: df[col].nunique() for col in df.columns}
+            }
         }
 
     except EmptyDataError:
