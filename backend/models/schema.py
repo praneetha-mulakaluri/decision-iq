@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class Schema(BaseModel):
-    columnNames: list[str]
-    dataTypes: dict[str, str]
-    numericColumns: list[str]
-    categoricalColumns: list[str]
+    column_names: list[str]
+    data_types: dict[str, str]
+    numeric_columns: list[str]
+    categorical_columns: list[str]
