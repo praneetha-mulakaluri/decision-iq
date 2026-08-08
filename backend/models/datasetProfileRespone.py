@@ -1,13 +1,15 @@
 from pydantic import BaseModel
 
+from models.preprocessing import Preprocessing
 from models.statistics import Statistics
 from models.summary import Summary
-from models.dataQuality import DataQuality
+from models.dataQuality import Dataquality
 from models.schema import Schema
 
 
 class DatasetProfileResponse(BaseModel):
     summary: Summary
     schema: Schema
-    dataQuality: DataQuality
-    statistics: dict[str, Statistics] # Nested dictionary to hold statistics for each column
+    data_quality: Dataquality
+    statistics: dict[str, Statistics]
+    preprocessing: Preprocessing
